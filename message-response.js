@@ -1,4 +1,14 @@
 const axios = require("axios");
+const util = require("util");
+const request = require("request");
+const post = util.promisify(request.post);
+
+const oAuthConfig = {
+  consumer_key: "zTu449DUl7MyUIkcUcgTxV7cN",
+  consumer_secret: "WiTEqsSJwex7OhbPC0d388FHo4DGAD9PijAZo44p74zQzw5I36",
+  token: "905477697744232449-LFZg8uw520bVpFrTi3wrSXJ1KAnGXVw",
+  token_secret: "qtpuD53OqaumJxuKnh5xb44R9GcS5OvDt5nqC7gl808jC",
+};
 
 const sayHi = async (event) => {
   // This is broken
@@ -47,5 +57,45 @@ const sayHi = async (event) => {
       },
     },
   };
-  await axios.post(requestConfig);
+
+  const response = await post(requestConfig);
+  console.log(response);
+};
+
+const respondFollower = async (event) => {
+  // This is broken
+  // We check that the message is a direct message
+
+  console.log("Bruh Moment", event.follow_events[0].source.id);
+  // Messages are wrapped in an array, so we'll extract the first element
+  const message = event.follow_events.type;
+
+  // Prepare and send the message reply
+  const senderScreenName = event.follow_events[0].source.name;
+
+  const requestConfig = {
+    url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
+    oauth: oAuthConfig,
+    json: {
+      event: {
+        type: "message_create",
+        message_create: {
+          target: {
+            recipient_id: event.follow_events[0].source.id,
+          },
+          message_data: {
+            text: `Hi @${senderScreenName}! 👋`,
+          },
+        },
+      },
+    },
+  };
+
+  const response = await post(requestConfig);
+  console.log(response.body);
+};
+
+module.exports = {
+  sayHi,
+  respondFollower,
 };

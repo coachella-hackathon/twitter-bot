@@ -1,7 +1,7 @@
 // https://developer.twitter.com/en/docs/twitter-api/v1/accounts-and-users/follow-search-get-users/api-reference/get-followers-ids
 const axios = require("axios");
 
-export const getFollowerList = async (userName) => {
+const getFollowerList = async (userName) => {
   const baseUrl = "https://api.twitter.com/1.1/followers/ids.json";
   const params = {
     cursor: -1,
@@ -15,7 +15,7 @@ export const getFollowerList = async (userName) => {
 };
 
 //array of ids
-export const getTweetHistoryOfIds = async (listOfIds) => {
+const getTweetHistoryOfIds = async (listOfIds) => {
   const baseUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json";
   const response = await Promise.all(
     listOfIds.map((val, idx) => {
@@ -33,4 +33,9 @@ export const getTweetHistoryOfIds = async (listOfIds) => {
   });
 
   return finalOutput;
+};
+
+module.exports = {
+  getFollowerList,
+  getTweetHistoryOfIds,
 };
