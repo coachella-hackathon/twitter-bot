@@ -2,6 +2,43 @@ const { Autohook } = require("twitter-autohook");
 const axios = require("axios");
 const { config } = require("./config");
 const { sayHi, respondFollower } = require("./message-response");
+const {privateKey} = require("./privateKey")
+var admin = require("firebase-admin");
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(privateKey),
+  databaseURL: "https://codechella-f4261.firebaseio.com"
+});
+const db = admin.firestore();
+
+const updateDBWithUserInfo = (userHandle, userData) => {
+  const userRef = db.collection('users').doc(userHandle);
+  userRef.set({
+    handle: '@Hello',
+    first: 'Lovelace',
+    last: testProps.lastName,
+    followers: '10',
+    tweetList: [{
+      tweetId: "10",
+      tweetContent: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. ",
+      likes: '2',
+      retweets: "3",
+      comments: "4",
+      creation: "date/time",
+      tweetOwner: "@Hello",
+      owner: "true"
+    }],
+  
+  });
+  
+}
+
+const testProps  = {
+  lastName: "hello2"
+}
+updateDBWithUserInfo('@TestUser', testProps)
+
 
 const onFollow = (webhook) => {
   webhook.on("event", async (event) => {
