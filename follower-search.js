@@ -60,7 +60,12 @@ const getTweetHistoryOfIds = async (listOfIds, userData, updateDBWithUserInfo, u
         "like_count": val.favorite_count,
         "retweet_count": val.retweet_count,
         "created_at": val.created_at,
-        "entities": {"hashtags": val.entities.hashtags},
+        "entities": {
+          "hashtags": val.entities.hashtags,
+          "symbols": val.entities.symbols,
+          "user_mentions": val.entities.user_mentions,
+          "urls": val.entities.urls,
+      },
 
       }
     });
