@@ -37,8 +37,24 @@ const sayHi = async (event) => {
   }
 
   // Prepare and send the message reply
-  const senderScreenName =
-    event.users[message.message_create.sender_id].name;
+  const senderScreenName = event.users[message.message_create.sender_id].name;
+
+  let textMessage = `Hi @${senderScreenName}! 👋🏻`;
+
+  if (
+    message.message_create.message_data.text
+      .toLowerCase()
+      .includes("motivation") ||
+    message.message_create.message_data.text.toLowerCase().includes("1")
+  ) {
+    textMessage = "Search for cute dog videos";
+    console.log(message.message_create);
+  } else if (
+    message.message_create.message_data.text.toLowerCase().includes("friend") ||
+    message.message_create.message_data.text.toLowerCase().includes("2")
+  ) {
+    textMessage = "I am your friend :)";
+  }
 
   const requestConfig = {
     url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
@@ -51,7 +67,7 @@ const sayHi = async (event) => {
             recipient_id: message.message_create.sender_id,
           },
           message_data: {
-            text: `Hi @${senderScreenName}! 👋`,
+            text: textMessage,
           },
         },
       },
@@ -73,7 +89,9 @@ const respondFollower = async (event) => {
   // Prepare and send the message reply
   const senderScreenName = event.follow_events[0].source.name;
 
-  const requestConfig = {
+  let textMessage = `Hi @${senderScreenName}! 👋 \n We have specially curated #HowAreYouTweening2020 for you! Thank you for being with us for the year, and we're excited to many more yearss ahead!`;
+
+  let requestConfig = {
     url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
     oauth: oAuthConfig,
     json: {
@@ -84,14 +102,35 @@ const respondFollower = async (event) => {
             recipient_id: event.follow_events[0].source.id,
           },
           message_data: {
-            text: `Hi @${senderScreenName}! 👋`,
+            text: textMessage,
           },
         },
       },
     },
   };
 
-  const response = await post(requestConfig);
+  let response = await post(requestConfig);
+  textMessage =
+    "We know that this has been a tough year! :( We are here to support! \n Reply one of the following to ... \n 1. Get Motivated \n 2. Meet meaningful people \n 3. xxxx";
+
+  requestConfig = {
+    url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
+    oauth: oAuthConfig,
+    json: {
+      event: {
+        type: "message_create",
+        message_create: {
+          target: {
+            recipient_id: event.follow_events[0].source.id,
+          },
+          message_data: {
+            text: textMessage,
+          },
+        },
+      },
+    },
+  };
+  response = await post(requestConfig);
   //console.log(response.body);
 };
 
