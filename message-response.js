@@ -38,7 +38,7 @@ const sayHi = async (event) => {
 
   // Prepare and send the message reply
   const senderScreenName =
-    event.users[message.message_create.sender_id].screen_name;
+    event.users[message.message_create.sender_id].name;
 
   const requestConfig = {
     url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
@@ -59,14 +59,14 @@ const sayHi = async (event) => {
   };
 
   const response = await post(requestConfig);
-  console.log(response);
+  //console.log(response);
 };
 
 const respondFollower = async (event) => {
   // This is broken
   // We check that the message is a direct message
 
-  console.log("Bruh Moment", event.follow_events[0].source.id);
+  //console.log("Bruh Moment", event.follow_events[0].source.id);
   // Messages are wrapped in an array, so we'll extract the first element
   const message = event.follow_events.type;
 
@@ -92,7 +92,7 @@ const respondFollower = async (event) => {
   };
 
   const response = await post(requestConfig);
-  console.log(response.body);
+  //console.log(response.body);
 };
 
 module.exports = {

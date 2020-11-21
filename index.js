@@ -2,13 +2,61 @@ const { Autohook } = require("twitter-autohook");
 const axios = require("axios");
 const { config } = require("./config");
 const { sayHi, respondFollower } = require("./message-response");
+const {privateKey} = require("./privateKey")
+const {updateDBWithUserInfo} = require('./db-methods')
+const {getFollowerList, getTweetHistoryOfIds, getUser} = require('./follower-search')
+var admin = require("firebase-admin");
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(privateKey),
+  databaseURL: "https://codechella-f4261.firebaseio.com"
+});
+const db = admin.firestore();
+
+const lookUp = (user, event) => {
+  // Need a way to get the user's actual username rather than the screen name :/
+  // We will use this method to parse through the new follower's relevant tweets
+  // We will add it into our userData object and put it into our database.
+ 
+  const userData = {
+    handle: '@Hello',
+    screen_name: user,
+    followers: '10',
+    tweetList: [{
+      tweetId: "10",
+      tweetContent: "Hi with desktop publions of Lorem Ipsum. ",
+      likes: '2',
+      retweets: "3",
+      comments: "4",
+      creation: "date/time",
+      tweetOwner: "@Hello",
+      owner: "true"
+    }],
+  }
+ 
+  console.log(event);
+
+  // const botName = event.follow_events[0].target.name;
+  // const userId = 905477697744232449;
+  // console.log(getUser(userId));
+  //console.log('followers', getFollowerList(botName));
+  updateDBWithUserInfo(user, userData, db)
+}
+
+//lookUp();
+//console.log(getFollowerList('mrbenc88'))
+
 
 const onFollow = (webhook) => {
   webhook.on("event", async (event) => {
     if (event.follow_events) {
-      // console.log("Something happened:", event);
+      //console.log("Something happened:", event);
       // console.log(event.follow_events[0].target, event.follow_events[0].source);
-      await respondFollower(event);
+      let user =  event.follow_events[0].source.name;
+
+      lookUp(user, event); // we call this method in order to parse through that user's tweets.
+      await respondFollower(event)
     }
     if (event.direct_message_events) {
       console.log("Person said hi");
