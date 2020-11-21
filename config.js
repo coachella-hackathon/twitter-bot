@@ -11,3 +11,5 @@ const config = {
 module.exports = {
   config,
 };
+
+// BEARER TOKEN = AAAAAAAAAAAAAAAAAAAAAFPnJgEAAAAAXNNCdF3infsKllQ%2FKXcus6IiDVQ%3DB9pYMfGTUebpzMd6Y3sG4ruvMp5ptPyqL2K5vrvh1fL7lrULrm
