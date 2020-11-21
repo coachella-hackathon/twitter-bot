@@ -14,34 +14,38 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-const lookUp = (user, event) => {
+const lookUp = async (user, event) => {
   // Need a way to get the user's actual username rather than the screen name :/
   // We will use this method to parse through the new follower's relevant tweets
   // We will add it into our userData object and put it into our database.
  
-  const userData = {
-    handle: '@Hello',
-    screen_name: user,
-    followers: '10',
-    tweetList: [{
-      tweetId: "10",
-      tweetContent: "Hi with desktop publions of Lorem Ipsum. ",
-      likes: '2',
-      retweets: "3",
-      comments: "4",
-      creation: "date/time",
-      tweetOwner: "@Hello",
-      owner: "true"
-    }],
-  }
+  // const userData = {
+  //   handle: '@Hello',
+  //   screen_name: user,
+  //   followers: '10',
+  //   tweetList: [{
+  //     tweetId: "10",
+  //     tweetContent: "Hi with desktop publions of Lorem Ipsum. ",
+  //     likes: '2',
+  //     retweets: "3",
+  //     comments: "4",
+  //     creation: "date/time",
+  //     tweetOwner: "@Hello",
+  //     owner: "true"
+  //   }],
+  // }
  
-  console.log(event);
+  console.log(event.follow_events[0].source);
+  const userName = event.follow_events[0].source.screen_name;
+  const userId = event.follow_events[0].source.id;
+
+  getTweetHistoryOfIds(userId, updateDBWithUserInfo, userName,db);
 
   // const botName = event.follow_events[0].target.name;
   // const userId = 905477697744232449;
   // console.log(getUser(userId));
   //console.log('followers', getFollowerList(botName));
-  updateDBWithUserInfo(user, userData, db)
+  // updateDBWithUserInfo(user, userData, db)
 }
 
 //lookUp();

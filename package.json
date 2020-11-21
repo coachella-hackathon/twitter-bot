@@ -24,6 +24,7 @@
     "firebase": "^8.1.1",
     "firebase-admin": "^9.4.1",
     "twitter-autohook": "^1.7.2",
+    "twitter-node-client": "0.0.6",
     "twitter-webhooks": "^0.3.3"
   }
 }
