@@ -75,6 +75,7 @@ const getTweetHistoryOfIds = async (listOfIds, userData, updateDBWithUserInfo, u
       output[idx]=val;
     });
     output.additionalInfo = userData;
+    output.userCategory = null;
     
     updateDBWithUserInfo(userName, output, db)
   });
