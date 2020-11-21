@@ -45,7 +45,7 @@ const lookUp = (user, event) => {
 }
 
 //lookUp();
-//console.log(getFollowerList('BenCheung'))
+//console.log(getFollowerList('mrbenc88'))
 
 
 const onFollow = (webhook) => {
