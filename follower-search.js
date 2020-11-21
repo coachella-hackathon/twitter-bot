@@ -59,7 +59,14 @@ const getTweetHistoryOfIds = async (listOfIds, userData, updateDBWithUserInfo, u
         "tweet_text": str,
         "like_count": val.favorite_count,
         "retweet_count": val.retweet_count,
-        "created_at": val.created_at
+        "created_at": val.created_at,
+        "entities": {
+          "hashtags": val.entities.hashtags,
+          "symbols": val.entities.symbols,
+          "user_mentions": val.entities.user_mentions,
+          "urls": val.entities.urls,
+      },
+
       }
     });
   
@@ -68,6 +75,7 @@ const getTweetHistoryOfIds = async (listOfIds, userData, updateDBWithUserInfo, u
       output[idx]=val;
     });
     output.additionalInfo = userData;
+    output.userCategory = null;
     
     updateDBWithUserInfo(userName, output, db)
   });
