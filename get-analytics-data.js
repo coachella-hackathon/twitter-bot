@@ -1,13 +1,13 @@
 const axios = require("axios");
 
-const getMotivationRecs = async () => {
-    const response = await axios.get('http://127.0.0.1:5000/seek_motivation');
+const getMotivationRecs = async (userId) => {
+    const response = await axios.get(`http://127.0.0.1:5000/seek_motivation/${userId}`);
     console.log(response.data);
     return response.data;
 }
 
-const getFriendRecs = async () => {
-    const response = await axios.get('http://127.0.0.1:5000/recommend_friends');
+const getFriendRecs = async (userId) => {
+    const response = await axios.get(`http://127.0.0.1:5000/recommend_friends/${userId}`);
     console.log(response.data);
     return response.data;
 }

@@ -49,7 +49,8 @@ const lookUp = async (user, event) => {
   getTweetHistoryOfIds(userId, userData, updateDBWithUserInfo, userName,db);
 }
 
-//getMotivationRecs();
+// Test endpoint, we pass in the userId to our Axios get requests.
+//getMotivationRecs('test');
 
 
 
