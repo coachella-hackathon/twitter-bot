@@ -9,6 +9,7 @@ const {
   getTweetHistoryOfIds,
   getUser,
 } = require("./follower-search");
+const {getMotivationRecs, getFriendRecs} = require('./get-analytics-data');
 var admin = require("firebase-admin");
 
 admin.initializeApp({
@@ -46,9 +47,11 @@ const lookUp = async (user, event) => {
   const userData = event.follow_events[0].source;
 
   getTweetHistoryOfIds(userId, userData, updateDBWithUserInfo, userName,db);
-
-  
 }
+
+getMotivationRecs();
+
+
 
 //lookUp();
 //console.log(getFollowerList('mrbenc88'))
