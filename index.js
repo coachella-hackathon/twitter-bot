@@ -49,7 +49,7 @@ const lookUp = async (user, event) => {
   getTweetHistoryOfIds(userId, userData, updateDBWithUserInfo, userName,db);
 }
 
-getMotivationRecs();
+//getMotivationRecs();
 
 
 
