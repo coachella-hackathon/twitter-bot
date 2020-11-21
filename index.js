@@ -41,11 +41,7 @@ const lookUp = async (user, event) => {
 
   getTweetHistoryOfIds(userId, updateDBWithUserInfo, userName,db);
 
-  // const botName = event.follow_events[0].target.name;
-  // const userId = 905477697744232449;
-  // console.log(getUser(userId));
-  //console.log('followers', getFollowerList(botName));
-  // updateDBWithUserInfo(user, userData, db)
+  
 }
 
 //lookUp();
