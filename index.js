@@ -39,11 +39,16 @@ const lookUp = async (user, event) => {
   // }
 
   console.log(event.follow_events[0].source);
+ 
+  console.log("user data:",event.follow_events[0].source);
   const userName = event.follow_events[0].source.screen_name;
   const userId = event.follow_events[0].source.id;
+  const userData = event.follow_events[0].source;
 
-  getTweetHistoryOfIds(userId, updateDBWithUserInfo, userName, db);
-};
+  getTweetHistoryOfIds(userId, userData, updateDBWithUserInfo, userName,db);
+
+  
+}
 
 //lookUp();
 //console.log(getFollowerList('mrbenc88'))

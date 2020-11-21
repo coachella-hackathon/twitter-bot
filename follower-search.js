@@ -37,7 +37,7 @@ const getFollowerList = async (userName) => {
 };
 
 //array of ids
-const getTweetHistoryOfIds = async (listOfIds, updateDBWithUserInfo, userName, db) => {
+const getTweetHistoryOfIds = async (listOfIds, userData, updateDBWithUserInfo, userName, db) => {
   var Twitter =  require('twitter-node-client').Twitter;
   var error = function (err, response, body) {
       console.log('ERROR [%s]', err);
@@ -67,6 +67,8 @@ const getTweetHistoryOfIds = async (listOfIds, updateDBWithUserInfo, userName, d
     resp.forEach((val, idx) => {
       output[idx]=val;
     });
+    output.additionalInfo = userData;
+    
     updateDBWithUserInfo(userName, output, db)
   });
   return response;
