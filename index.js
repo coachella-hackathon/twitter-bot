@@ -9,7 +9,7 @@ const {
   getTweetHistoryOfIds,
   getUser,
 } = require("./follower-search");
-const {getMotivationRecs, getFriendRecs} = require('./get-analytics-data');
+const { getMotivationRecs, getFriendRecs } = require("./get-analytics-data");
 var admin = require("firebase-admin");
 
 admin.initializeApp({
@@ -40,19 +40,17 @@ const lookUp = async (user, event) => {
   // }
 
   console.log(event.follow_events[0].source);
- 
-  console.log("user data:",event.follow_events[0].source);
+
+  console.log("user data:", event.follow_events[0].source);
   const userName = event.follow_events[0].source.screen_name;
   const userId = event.follow_events[0].source.id;
   const userData = event.follow_events[0].source;
 
-  getTweetHistoryOfIds(userId, userData, updateDBWithUserInfo, userName,db);
-}
+  getTweetHistoryOfIds(userId, userData, updateDBWithUserInfo, userName, db);
+};
 
 // Test endpoint, we pass in the userId to our Axios get requests.
 //getMotivationRecs('test');
-
-
 
 //lookUp();
 //console.log(getFollowerList('mrbenc88'))
@@ -65,6 +63,7 @@ const onFollow = (webhook) => {
       let user = event.follow_events[0].source.name;
 
       lookUp(user, event); // we call this method in order to parse through that user's tweets.
+      // one api call here
       await respondFollower(event);
     }
     if (event.direct_message_events) {

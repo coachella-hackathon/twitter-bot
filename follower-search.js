@@ -88,6 +88,9 @@ const getTweetHistoryOfIds = async (
       });
       output.additionalInfo = userData;
       output.userCategory = null;
+      output.mood = "Satisfied";
+      output["happiest-tweet"] = null;
+      output["saddest-tweet"] = null;
 
       updateDBWithUserInfo(userName, output, db);
     }

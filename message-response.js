@@ -1,6 +1,7 @@
 const axios = require("axios");
 const util = require("util");
 const request = require("request");
+const { startAnalysis, getFriendRecs } = require("./get-analytics-data");
 const post = util.promisify(request.post);
 
 const oAuthConfig = {
@@ -38,6 +39,7 @@ const sayHi = async (event) => {
 
   // Prepare and send the message reply
   const senderScreenName = event.users[message.message_create.sender_id].name;
+  const userName = event.users[message.message_create.sender_id].screen_name;
 
   let textMessage = `Hi @${senderScreenName}! 👋🏻`;
 
@@ -47,13 +49,17 @@ const sayHi = async (event) => {
       .includes("motivation") ||
     message.message_create.message_data.text.toLowerCase().includes("1")
   ) {
-    textMessage = "Search for cute dog videos";
+    const response = await getFriendRecs(userName);
+    console.log(response);
+    textMessage = `Checkout these hashtags, we think they may be meaningful for you. \n ${response.hashtags.join(' ')}\n\n Follow these people to get positivity in your life: \n ${response.big_accounts.map((val)=>`@${val}`).join(' ')}`;
     console.log(message.message_create);
   } else if (
     message.message_create.message_data.text.toLowerCase().includes("friend") ||
     message.message_create.message_data.text.toLowerCase().includes("2")
   ) {
-    textMessage = "I am your friend :)";
+    const response = await getFriendRecs(userName);
+    console.log(response);
+    textMessage = `Follow this person who may be relevant to you.\n @${response.friend}`;
   }
 
   const requestConfig = {
@@ -88,9 +94,10 @@ const respondFollower = async (event) => {
 
   // Prepare and send the message reply
   const senderScreenName = event.follow_events[0].source.name;
+  const userName = event.follow_events[0].source.screen_name;
 
-  let textMessage = `Hi @${senderScreenName}! 👋 \n We have specially curated #HowAreYouTweening2020 for you! Thank you for being with us for the year, and we're excited to many more yearss ahead!`;
-
+  console.log(event.follow_events[0].source);
+  let textMessage = `Hi @${senderScreenName}! 👋 \n We have specially curated #HowAreYouTweening2020 for you! Thank you for being with us for the year, and we're excited to have many more years ahead!`;
   let requestConfig = {
     url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
     oauth: oAuthConfig,
@@ -111,7 +118,7 @@ const respondFollower = async (event) => {
 
   let response = await post(requestConfig);
   textMessage =
-    "We know that this has been a tough year! :( We are here to support! \n Reply one of the following to ... \n 1. Get Motivated \n 2. Meet meaningful people \n 3. xxxx";
+    "We know that this has been a tough year! :( We are here to support! \n Reply one of the following to ... \n 1. Get Motivated \n 2. Meet meaningful people \n";
 
   requestConfig = {
     url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
@@ -131,6 +138,10 @@ const respondFollower = async (event) => {
     },
   };
   response = await post(requestConfig);
+  startAnalysis(userName);
+  // setTimeout(() => {
+  // }, 2000);
+
   //console.log(response.body);
 };
 
