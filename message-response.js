@@ -51,7 +51,11 @@ const sayHi = async (event) => {
   ) {
     const response = await getFriendRecs(userName);
     console.log(response);
-    textMessage = `Checkout these hashtags, we think they may be meaningful for you. \n ${response.hashtags.join(' ')}\n\n Follow these people to get positivity in your life: \n ${response.big_accounts.map((val)=>`@${val}`).join(' ')}`;
+    textMessage = `Checkout these hashtags, we think they may be meaningful for you. \n ${response.hashtags.join(
+      " "
+    )}\n\n Follow these people to get positivity in your life: \n ${response.big_accounts
+      .map((val) => `@${val}`)
+      .join(" ")}`;
     console.log(message.message_create);
   } else if (
     message.message_create.message_data.text.toLowerCase().includes("friend") ||
@@ -97,7 +101,7 @@ const respondFollower = async (event) => {
   const userName = event.follow_events[0].source.screen_name;
 
   console.log(event.follow_events[0].source);
-  let textMessage = `Hi @${senderScreenName}! 👋 \n We have specially curated #HowAreYouTweening2020 for you! Thank you for being with us for the year, and we're excited to have many more years ahead!`;
+  let textMessage = `Hi @${senderScreenName}! 👋 \n We have specially curated #HowAreYouTweening2020 for you! Thank you for being with us for the year, and we're excited to have many more years ahead! \n Check out what you've been up to: \n https://how-are-you-tweeting.netlify.app/?username=${userName}`;
   let requestConfig = {
     url: "https://api.twitter.com/1.1/direct_messages/events/new.json",
     oauth: oAuthConfig,
